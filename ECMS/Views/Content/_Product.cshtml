@@ -1,0 +1,31 @@
+﻿
+@model IEnumerable<YourNamespace.Models.Product>
+
+@foreach (var product in Model)
+{
+    <div class="col-xl-3 col-lg-4 col-md-6 col-6">
+        <div class="product_grid card b-0">
+            <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+            <div class="card-body p-0">
+                <div class="shop_thumb position-relative">
+                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/Assets/Frontend/img/product/2.jpg" alt="..."></a>
+                    <div class="product-hover-overlay d-flex align-items-center justify-content-between">
+                        <div class="edlio"><a href="javascript:void(0);" class="text-underline fs-sm ft-bold snackbar-addcart">Add To Cart</a></div>
+                        <div class="edlio d-flex align-items-center">
+                            <button class="btn auto btn_love mr-2 snackbar-wishlist"><i class="far fa-heart"></i></button>
+                            <a href="#" class="text-underline" data-toggle="modal" data-target="#quickview"><i class="fas fa-expand-arrows-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+                <div class="text-left">
+                    <div class="text-left">
+                        <h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Women Striped Shirt Dress</a></h5>
+                        <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$99 - $129</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

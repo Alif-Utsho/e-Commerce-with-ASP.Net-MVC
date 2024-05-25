@@ -1,0 +1,219 @@
+﻿@model ECMS.Models.Entities.ProductDetailsModel
+
+@{
+    ViewBag.Title = "ProductDetails";
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+}
+
+<!-- ======================= Product Detail ======================== -->
+<section class="">
+    <div class="container">
+        <div class="row justify-content-between">
+
+            <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12">
+                <div class="quick_view_slide">
+                    @foreach(var productImage in Model.ProductImages)
+                    {
+                        <div class="single_view_slide"><a href="@productImage.image" data-lightbox="roadtrip" class="d-block mb-4"><img src="@productImage.image" class="img-fluid rounded" alt="" /></a></div>
+                    }
+                </div>
+            </div>
+
+                <div class="col-xl-7 col-lg-6 col-md-12 col-sm-12">
+            <form action="/shoppingcart/addtocart" method="post">
+                <input type="hidden" name="productId" value="@Model.id" />
+                    <div class="prd_details pl-3">
+
+                        <div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1">Dresses</span></div>
+                        <div class="prt_02 mb-3">
+                            <h2 class="ft-bold mb-1">@Model.name</h2>
+                            <div class="text-left">
+                                <div class="elis_rty">
+                                    @if (Model.old_price != null)
+                                    {
+                                        <span class="ft-medium text-muted line-through fs-md mr-2">$@Model.old_price</span>
+                                    }
+
+                                    <span class="ft-bold theme-cl fs-lg mr-2">$@Model.new_price</span>
+
+                                    @if (Model.stock <= 0)
+                                    {
+                                        <span class="ft-regular text-danger bg-light-danger py-1 px-2 fs-sm">Out of Stock</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="prt_03 mb-4">
+                            <p>@Model.description</p>
+                        </div>
+
+                        @if (Model.ProductColors.Count > 0)
+                        {
+                            <div class="prt_04 mb-2">
+                                <p class="d-flex align-items-center mb-0 text-dark ft-medium">Color:</p>
+                                <div class="text-left">
+
+                                    @foreach (var proColor in Model.ProductColors)
+                                    {
+                                        <div class="form-check form-option form-check-inline mb-1">
+                                            <input class="form-check-input" type="radio" name="color" value="@proColor.Color.colorName" id="color-@proColor.id" required>
+                                            <label class="form-option-label rounded-circle" for="color-@proColor.id"><span class="form-option-color rounded-circle" style="background-color:@proColor.Color.color1;"></span></label>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.ProductSizes.Count > 0)
+                        {
+                            <div class="prt_04 mb-4">
+                                <p class="d-flex align-items-center mb-0 text-dark ft-medium">Size:</p>
+                                <div class="text-left pb-0 pt-2">
+                                    @foreach (var proSize in Model.ProductSizes)
+                                    {
+                                        <div class="form-check size-option form-option form-check-inline mb-2">
+                                            <input class="form-check-input" type="radio" name="size" value="@proSize.Size.sizeName" id="size-@proSize.id" required>
+                                            <label class="form-option-label" for="size-@proSize.id">@proSize.Size.sizeName</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="prt_05 mb-4">
+                            <div class="form-row mb-7">
+                                <div class="col-12 col-lg-auto">
+                                    <!-- Quantity -->
+                                    <select class="mb-2 custom-select" name="quantity">
+                                        <option value="1" selected="">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-lg">
+                                    <!-- Submit -->
+                                    <button type="submit" class="btn btn-block custom-height bg-dark mb-2">
+                                        <i class="lni lni-shopping-basket mr-2"></i>Add to Cart
+                                    </button>
+                                </div>
+                                <div class="col-12 col-lg-auto">
+                                    <!-- Wishlist -->
+                                    <button class="btn custom-height btn-default btn-block mb-2 text-dark" data-toggle="button">
+                                        <i class="lni lni-heart mr-2"></i>Wishlist
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+            </form>
+                </div>
+        </div>
+    </div>
+</section>
+<!-- ======================= Product Detail End ======================== -->
+<!-- ======================= Product Description ======================= -->
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-xl-11 col-lg-12 col-md-12 col-sm-12">
+                <ul class="nav nav-tabs b-0 d-flex align-items-center justify-content-center simple_tab_links mb-4" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="description-tab" href="#description" data-toggle="tab" role="tab" aria-controls="description" aria-selected="true">Description</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="#information" id="information-tab" data-toggle="tab" role="tab" aria-controls="information" aria-selected="false">Additional information</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+
+                    <!-- Description Content -->
+                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                        <div class="description_info">
+                            @Model.description 
+                        </div>
+                    </div>
+
+                    <!-- Additional Content -->
+                    <div class="tab-pane fade" id="information" role="tabpanel" aria-labelledby="information-tab">
+                        <div class="additionals">
+                            @Html.Raw(Model.additional_description)
+                        </div>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======================= Product Description End ==================== -->
+<!-- ======================= Similar Products Start ============================ -->
+<section class="middle pt-0">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="sec_title position-relative text-center">
+                    <h2 class="off_title">Similar Products</h2>
+                    <h3 class="ft-bold pt-3">Matching Products</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="slide_items">
+
+                    @foreach(var product in ViewBag.RelatedProducts)
+                    { 
+                    <div class="single_itesm">
+                        <div class="product_grid card b-0 mb-0">
+                            @if(product.discount > 0)
+                            {
+                                <div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">-@product.discount%</div>
+                            }
+
+                            <div class="card-body p-0">
+                                <div class="shop_thumb position-relative">
+                                    <a class="card-img-top d-block overflow-hidden" href="/home/productdetails/@product.slug"><img class="card-img-top" src="@Url.Content(product.thumbnail)" alt="..."></a>
+                                    <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                        <div class="edlio"><a href="/home/productdetails/@product.slug" class="text-white fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>View Details</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer b-0 p-3 pb-0 d-flex align-items-start justify-content-center">
+                                <div class="text-left">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="/home/productdetails/@product.slug">@product.name</a></h5>
+                                        <div class="elis_rty">
+                                            @if (product.old_price != null)
+                                            {
+                                                <span class="text-muted ft-medium line-through mr-2">$@product.old_price</span>
+                                                <span class="ft-bold theme-cl fs-md">$@product.new_price</span>
+                                            } else
+                                            {
+                                                <span class="ft-bold fs-md text-dark">$@product.new_price</span>
+                                            }
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ======================= Similar Products Start ============================ -->

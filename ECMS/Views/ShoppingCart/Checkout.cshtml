@@ -1,0 +1,105 @@
+﻿@model ECMS.Models.RequestModel.OrderRequestModel
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+}
+
+<!-- ======================= Product Detail ======================== -->
+<section class="">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="text-center d-block mb-5">
+                    <h2>Checkout</h2>
+                </div>
+            </div>
+        </div>
+        <form action="@Url.Action("OrderSave", "ShoppingCart")" method="post">
+            <div class="row justify-content-between">
+                <div class="col-12 col-lg-7 col-md-12">
+
+                    <h5 class="mb-4 ft-medium">Shipping Details</h5>
+                    <div class="row mb-2">
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark"> Name *</label>
+                                <input type="text" class="form-control" placeholder="First Name" name="Name" value="@Model.Name" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark">Email *</label>
+                                <input type="email" class="form-control" placeholder="Email" name="Email" value="@Model.Email" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark">Mobile Number</label>
+                                <input type="text" class="form-control" placeholder="Mobile Number" name="Phone" value="@Model.Phone" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark">Address *</label>
+                                <textarea class="form-control ht-50" name="Address">@Model.Address</textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark">Note</label>
+                                <input type="text" class="form-control" placeholder="Note (Optional)" name="Note" value="@Model.Note" />
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-12 col-lg-4 col-md-12">
+
+
+                    <div class="card mb-4 gray">
+                        <div class="card-body">
+                            <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Subtotal</span> <span class="ml-auto text-dark ft-medium">$@ViewBag.CartTotal</span>
+                                </li>
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Discount</span> &nbsp;
+                                    @if (@ViewBag.DiscountCoupon != null)
+                                    {
+                                        <span>(@ViewBag.DiscountCoupon)</span>
+                                    }
+                                    <span class="ml-auto text-dark ft-medium">$@ViewBag.DiscountAmount</span>
+                                </li>
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Total</span> <span class="ml-auto text-dark ft-medium">$@(ViewBag.CartTotal-ViewBag.DiscountAmount)</span>
+                                </li>
+                                <li class="list-group-item fs-sm text-center">
+                                    Shipping cost Free *
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-dark mb-3">Place Your Order</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
+<!-- ======================= Product Detail End ======================== -->
