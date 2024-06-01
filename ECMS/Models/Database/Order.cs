@@ -37,5 +37,6 @@ namespace ECMS.Models.Database
         public virtual OrderStatus OrderStatus1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual Shipping Shipping { get; set; }
     }
 }

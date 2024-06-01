@@ -16,8 +16,9 @@ namespace ECMS.Controllers
 
         private readonly ShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(GlobalDataService globalDataService, DBEntities dbContext) : base(globalDataService, dbContext)
-    {
+        public ShoppingCartController(GlobalDataService globalDataService, DBEntities dbContext)
+        : base(globalDataService, dbContext, new ShoppingCartService(System.Web.HttpContext.Current))
+        {
             _shoppingCartService = new ShoppingCartService(System.Web.HttpContext.Current);
         }
 
@@ -50,6 +51,8 @@ namespace ECMS.Controllers
         public ActionResult RemoveFromCart(int id)
         {
             _shoppingCartService.RemoveItem(id);
+            Session.Remove("CouponCode");
+            Session.Remove("DiscountAmount");
             return RedirectToAction("Index");
         }
 
@@ -144,23 +147,36 @@ namespace ECMS.Controllers
                 return RedirectToAction("Checkout", orderRequest);
             }
 
-            var customer = _dbContext.Customers.FirstOrDefault(i => i.email.Equals(orderRequest.Email));
-            if(customer == null)
+            Customer customer = null;
+
+            if (Session["customerId"] != null)
             {
-                var passwordHasher = new PasswordHasher();
-                string hashedPassword = passwordHasher.HashPassword(orderRequest.Phone);
-                var customerModel = new Customer
-                {
-                    name = orderRequest.Name,
-                    email = orderRequest.Email,
-                    phone = orderRequest.Phone,
-                    address = orderRequest.Address,
-                    password = hashedPassword
-                };
-                _dbContext.Customers.Add(customerModel);
-                _dbContext.SaveChanges();
-                customer = customerModel;
+                int customerId = int.Parse(Session["customerId"].ToString());
+                customer = _dbContext.Customers.FirstOrDefault(i => i.id == customerId);
+                
             }
+
+            if (customer == null)
+            {
+                customer = _dbContext.Customers.FirstOrDefault(i => i.email.Equals(orderRequest.Email));
+                if (customer == null)
+                {
+                    var passwordHasher = new PasswordHasher();
+                    string hashedPassword = passwordHasher.HashPassword(orderRequest.Phone);
+                    var customerModel = new Customer
+                    {
+                        name = orderRequest.Name,
+                        email = orderRequest.Email,
+                        phone = orderRequest.Phone,
+                        address = orderRequest.Address,
+                        password = hashedPassword
+                    };
+                    _dbContext.Customers.Add(customerModel);
+                    _dbContext.SaveChanges();
+                    customer = customerModel;
+                }
+            }
+
 
             var order_shipping = new Shipping
             {
@@ -177,17 +193,19 @@ namespace ECMS.Controllers
             int order_discount = _shoppingCartService.GetDiscountAmount();
             string order_coupon = _shoppingCartService.GetDiscountCoupon();
             List<CartItem> cartItem = _shoppingCartService.GetItems();
+            string trackingId = Guid.NewGuid().ToString("n").Substring(0, 7).ToUpper();
 
             var order = new Order
             {
-                amount = order_amount,
+                amount = order_amount - order_discount,
                 discount = order_discount,
                 couponused = order_coupon,
                 customer_id = customer.id,
                 shipping_id = order_shipping.id,
                 orderstatus = 1,
                 note = orderRequest.Note,
-                created_at = DateTime.Now
+                created_at = DateTime.Now,
+                tracking = trackingId
             };
             _dbContext.Orders.Add(order);
             _dbContext.SaveChanges();
@@ -205,6 +223,13 @@ namespace ECMS.Controllers
                     quantity = item.Quantity
                 };
                 _dbContext.OrderDetails.Add(orderDetails);
+
+                var product = _dbContext.Products.FirstOrDefault(p => p.id == item.ProductId);
+                if (product != null)
+                {
+                    product.stock -= item.Quantity;
+                    product.sold += item.Quantity;
+                }
             }
             _dbContext.SaveChanges();
 
@@ -212,7 +237,14 @@ namespace ECMS.Controllers
             Session.Remove("CouponCode");
             Session.Remove("DiscountAmount");
 
+            TempData["Success"] = "Order has been placed successfully";
+            TempData["Tracking"] = trackingId;
             return RedirectToAction("OrderSuccess");
+        }
+
+        public ActionResult OrderSuccess()
+        {
+            return View();
         }
 
     }

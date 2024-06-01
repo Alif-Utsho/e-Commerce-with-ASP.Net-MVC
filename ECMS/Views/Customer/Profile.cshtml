@@ -1,0 +1,50 @@
+﻿@model ECMS.Models.Entities.CustomerModel
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+    <div class="container middle" style="text-align: left;">
+                <!-- row -->
+        <form class="row m-0" action="@Url.Action("ProfileUpdate", "Customer")" method="post">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="small text-dark ft-medium">First Name *</label>
+                    <input type="text" class="form-control" name="name" value="@Model.name" />
+                </div>
+            </div>
+
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="small text-dark ft-medium">Email ID *</label>
+                    <input type="text" class="form-control bg-white" value="@Model.email" name="email" readonly />
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="small text-dark ft-medium">Phone *</label>
+                    <input type="text" class="form-control" value="@Model.phone" name="phone" />
+                </div>
+            </div>
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="form-group">
+                    <label class="small text-dark ft-medium">Address *</label>
+                    <textarea class="form-control ht-80" name="address">@Model.address</textarea>
+                </div>
+            </div>
+
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-dark">Save Changes</button>
+                </div>
+            </div>
+
+        </form>
+                
+    </div>
+

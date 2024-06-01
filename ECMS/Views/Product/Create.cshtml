@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+        
+
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">Add New Product</h5>
+                <hr />
+                <div class="form-body mt-4">
+                    <form action="@Url.Action("Upload", "Product")" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="border border-3 p-4 rounded">
+                                    <div class="mb-3">
+                                        <label for="inputProductTitle" class="form-label">Product Title *</label>
+                                        <input type="text" class="form-control" id="inputProductTitle" placeholder="Enter product title" name="name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="inputProductDescription" class="form-label">Description *</label>
+                                        <textarea class="form-control" id="inputProductDescription" rows="3" name="description"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputProductDescription" class="form-label">Additional Description *</label>
+                                        <textarea class="form-control" id="inputProductDescription" rows="3" name="additional_description"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputProductDescription" class="form-label">Product Images *</label>
+                                        <input id="image-uploadify" type="file" name="images" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="border border-3 p-4 rounded">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="inputPrice" class="form-label">Price *</label>
+                                            <input type="text" class="form-control" id="inputPrice" name="new_price" placeholder="00.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="inputCompareatprice" class="form-label">Purchase Price *</label>
+                                            <input type="text" class="form-control" name="purchase_price" id="inputCompareatprice" placeholder="00.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="inputCostPerPrice" class="form-label">Old Price</label>
+                                            <input type="text" class="form-control" id="inputCostPerPrice" name="old_price" placeholder="00.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="inputStarPoints" class="form-label">Discount </label>
+                                            <input type="text" class="form-control" id="inputStarPoints" name="discount" readonly placeholder="00.00">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="inputProductType" class="form-label">Product Category *</label>
+                                            <select class="form-select" id="inputProductType" name="category_id">
+                                                <option></option>
+                                                @foreach (var category in ViewBag.Categories)
+                                                {
+                                                    <option value="@category.id">@category.name</option>
+                                                }
+
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label for="inputStock" class="form-label">Stock *</label>
+                                            <input type="text" class="form-control" name="stock" id="inputStock" placeholder="00">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="inputCostPerPrice" class="form-label"> Brand </label>
+                                            <input type="text" class="form-control" id="inputCostPerPrice" name="brand" placeholder="">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="multiple-select-field" class="form-label">Select Colors (Optional)</label>
+                                            <select class="form-select select2" id="multiple-select-field" data-placeholder="Choose anything" name="colors[]" multiple>
+                                                @foreach (var color in ViewBag.Colors)
+                                                {
+                                                    <option value="@color.Id">@color.colorName</option>
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="multiple-select-field" class="form-label">Select Sizes (Optional)</label>
+                                            <select class="form-select select2" id="multiple-select-field" data-placeholder="Choose anything" name="sizes[]" multiple>
+                                                @foreach (var size in ViewBag.Sizes)
+                                                {
+                                                    <option value="@size.id">@size.sizeName</option>
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary">Save Product</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!--end page wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function calculateDiscount() {
+            var newPrice = parseFloat($('#inputPrice').val());
+            var oldPrice = parseFloat($('#inputCostPerPrice').val());
+
+            if (!isNaN(newPrice) && !isNaN(oldPrice) && oldPrice !== 0) {
+                var discountPercentage = ((oldPrice - newPrice) / oldPrice) * 100;
+
+                $('#inputStarPoints').val(discountPercentage.toFixed(2) + '%');
+            }
+        }
+        $('#inputPrice, #inputCostPerPrice').on('input', calculateDiscount);
+    });
+</script>

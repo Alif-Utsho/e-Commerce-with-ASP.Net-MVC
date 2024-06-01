@@ -120,7 +120,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="tracking" Type="varchar" MaxLength="50" />
+          <Property Name="tracking" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="amount" Type="float" Nullable="false" />
           <Property Name="discount" Type="float" Nullable="false" />
           <Property Name="couponused" Type="varchar" MaxLength="50" />
@@ -181,11 +181,13 @@
           <Property Name="new_price" Type="int" Nullable="false" />
           <Property Name="discount" Type="int" />
           <Property Name="stock" Type="int" Nullable="false" />
-          <Property Name="thumbnail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sold" Type="int" />
+          <Property Name="thumbnail" Type="varchar" MaxLength="50" />
           <Property Name="description" Type="text" Nullable="false" />
           <Property Name="additional_description" Type="text" />
           <Property Name="featured" Type="bit" Nullable="false" />
           <Property Name="status" Type="bit" Nullable="false" />
+          <Property Name="brand" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ProductSizes">
           <Key>
@@ -301,6 +303,18 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="orderstatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Shippings">
+          <End Role="Shippings" Type="Self.Shippings" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shippings">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="shipping_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -489,6 +503,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderStatuses" Association="Self.FK_Orders_OrderStatuses">
             <End Role="OrderStatuses" EntitySet="OrderStatuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Shippings" Association="Self.FK_Orders_Shippings">
+            <End Role="Shippings" EntitySet="Shippings" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderStatuses_OrderStatuses" Association="Self.FK_OrderStatuses_OrderStatuses">
@@ -681,7 +699,8 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Orders" FromRole="Orders" ToRole="OrderDetails" />
           <NavigationProperty Name="OrderStatus1" Relationship="Self.FK_Orders_OrderStatuses" FromRole="Orders" ToRole="OrderStatuses" />
           <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Orders" FromRole="Orders" ToRole="Payments" />
-          <Property Name="tracking" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tracking" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Shipping" Relationship="DBModel.FK_Orders_Shippings" FromRole="Order" ToRole="Shipping" />
         </EntityType>
         <EntityType Name="OrderStatus">
           <Key>
@@ -742,7 +761,7 @@
           <Property Name="new_price" Type="Int32" Nullable="false" />
           <Property Name="discount" Type="Int32" />
           <Property Name="stock" Type="Int32" Nullable="false" />
-          <Property Name="thumbnail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="thumbnail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="additional_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="featured" Type="Boolean" Nullable="false" />
@@ -753,6 +772,8 @@
           <NavigationProperty Name="Products1" Relationship="Self.FK_Products_Products" FromRole="Products" ToRole="Products1" />
           <NavigationProperty Name="Product1" Relationship="Self.FK_Products_Products" FromRole="Products1" ToRole="Products" />
           <NavigationProperty Name="ProductSizes" Relationship="Self.FK_ProductSizes_Products" FromRole="Products" ToRole="ProductSizes" />
+          <Property Name="sold" Type="Int32" />
+          <Property Name="brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductSize">
           <Key>
@@ -775,6 +796,7 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Shippings_Customers" FromRole="Shippings" ToRole="Customers" />
+          <NavigationProperty Name="Orders" Relationship="DBModel.FK_Orders_Shippings" FromRole="Shipping" ToRole="Order" />
         </EntityType>
         <EntityType Name="Size">
           <Key>
@@ -782,7 +804,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sizeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="status" Type="Binary" MaxLength="50" FixedLength="true" Nullable="false" />
+          <Property Name="status" Type="Binary" Nullable="false" MaxLength="50" FixedLength="true" />
           <NavigationProperty Name="ProductSizes" Relationship="Self.FK_ProductSizes_Sizes" FromRole="Sizes" ToRole="ProductSizes" />
         </EntityType>
         <EntityType Name="sysdiagram">
@@ -1112,7 +1134,23 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserTokens" EntitySet="UserTokens" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Shippings" Association="DBModel.FK_Orders_Shippings">
+            <End Role="Shipping" EntitySet="Shippings" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Orders_Shippings">
+          <End Type="DBModel.Shipping" Role="Shipping" Multiplicity="1" />
+          <End Type="DBModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shipping">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="shipping_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1300,6 +1338,8 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="DBModel.Product">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="brand" ColumnName="brand" />
+                <ScalarProperty Name="sold" ColumnName="sold" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="slug" ColumnName="slug" />

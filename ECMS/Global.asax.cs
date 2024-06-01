@@ -20,5 +20,26 @@ namespace ECMS
 
             UnityConfig.RegisterComponents();
         }
+
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+            if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                if (HttpContext.Current.User.IsInRole("Admin"))
+                {
+                    if (!HttpContext.Current.Request.Url.AbsolutePath.Contains("/Admin"))
+                    {
+                        Response.Redirect("~/Admin/Login");
+                    }
+                }
+                else if (HttpContext.Current.User.IsInRole("Customer"))
+                {
+                    if (!HttpContext.Current.Request.Url.AbsolutePath.Contains("/Customer"))
+                    {
+                        Response.Redirect("~/Customer/Login");
+                    }
+                }
+            }
+        }
     }
 }

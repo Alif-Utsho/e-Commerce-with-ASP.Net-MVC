@@ -1,8 +1,65 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Frontend.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<h2>Index</h2>
 
+
+<!-- Single Order List -->
+@foreach (var order in ViewBag.Orders)
+{
+    <div class="ord_list_wrap border mb-4 mfliud">
+        <div class="ord_list_head gray d-flex align-items-center justify-content-between px-3 py-3">
+            <div class="olh_flex">
+                <p class="m-0 p-0"><span class="text-muted">Order Number</span></p>
+                <h6 class="mb-0 ft-medium">#@order.tracking</h6>
+            </div>
+            <div class="olh_flex">
+                <span class="btn bg-light-danger rounded text-dark">@order.OrderStatus1.name</span>
+            </div>
+        </div>
+        <div class="ord_list_body text-left">
+            <!-- First Product -->
+            @foreach (var product in order.OrderDetails)
+            {
+                <div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-12">
+                        <div class="cart_single d-flex align-items-start mfliud-bot">
+                            
+                            <div class="cart_single_caption pl-3">
+                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1">@product.product_name</h4>
+                                <p class="mb-2"><span class="text-dark medium">Size: @product.product_size</span>, <span class="text-dark medium">Color: @product.product_color</span></p>
+                                <h4 class="fs-sm ft-bold mb-0 lh-1">$@product.price</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+                        <p class="mb-1 p-0"><span class="text-muted">Quantity</span></p>
+                        <div class="delv_status"><span class="ft-medium small text-warning bg-light-warning rounded px-3 py-1">@product.quantity</span></div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-6">
+                        <p class="mb-1 p-0"><span class="text-muted">Order date:</span></p>
+                        <h6 class="mb-0 ft-medium fs-sm"> @order.created_at.ToString("dd MMMM yyyy") </h6>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
+            <div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);" class="ft-medium fs-sm">Discount: $@order.discount</a></div>
+            <div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
+                <div class="olf_flex_inner hide_mob"><p class="m-0 p-0">
+                    @if(order.couponused != null) 
+                    {
+
+                    <span class="text-muted medium">Coupon used: @order.couponused</span>
+                    }
+                    </p></div>
+                <div class="olf_inner_right"><h5 class="mb-0 fs-sm ft-bold">Total: $@order.amount</h5></div>
+            </div>
+        </div>
+    </div>
+    <!-- End Order List -->
+}

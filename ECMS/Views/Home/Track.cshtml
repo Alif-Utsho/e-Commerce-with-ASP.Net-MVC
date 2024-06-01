@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Track";
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+}
+
+
+
+
+<section class="">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                <h2 class="alert text-center">Order Track</h2>
+                <form class="border p-3 rounded" action="@Url.Action("OrderTrack", "Home")">
+                    <div class="form-group">
+                        <label>Track *</label>
+                        <input type="text" class="form-control" placeholder="Order Number *" name="tracking">
+                    </div>
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</section>

@@ -12,7 +12,8 @@ namespace ECMS.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(GlobalDataService globalDataService, DBEntities dbContext) : base(globalDataService, dbContext) { }
+        public HomeController(GlobalDataService globalDataService, DBEntities dbContext)
+        : base(globalDataService, dbContext, new ShoppingCartService(System.Web.HttpContext.Current)) { }
 
         public ActionResult Index()
         {
@@ -65,6 +66,44 @@ namespace ECMS.Controllers
             var mapper_categoryProducts = new Mapper(config_categoryProducts);
             var products = mapper_categoryProducts.Map<CategoryProductModel>(category);
             return View(products);
+        }
+
+        public ActionResult Track()
+        {
+            return View();
+        }
+
+        public ActionResult OrderTrack(string tracking)
+        {
+            var order = _dbContext.Orders.FirstOrDefault(i => i.tracking == tracking);
+            if (order == null)
+            {
+                return RedirectToAction("NotFound");
+            }
+
+            var config = new MapperConfiguration(c => c.CreateMap<Order, OrderModel>());
+            var mapper = new Mapper(config);
+            var trackOrder = mapper.Map<OrderModel>(order);
+
+            return View(trackOrder);
+        }
+
+        public ActionResult Search(string keyword, int categoryId=0)
+        {
+            var _products = _dbContext.Products.Where(p => p.name.Contains(keyword));
+            if (categoryId > 0)
+            {
+                _products = _products.Where(p => p.category_id == categoryId);
+            }
+            var productList = _products.ToList();
+
+            var config = new MapperConfiguration(c => c.CreateMap<Product, ProductModel>());
+            var mapper = new Mapper(config);
+            var products = mapper.Map<List<ProductModel>>(productList);
+
+            ViewBag.Keyword = keyword;
+            ViewBag.Products = products;
+            return View();
         }
 
         public ActionResult NotFound()

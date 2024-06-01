@@ -1,4 +1,5 @@
-﻿using ECMS.Services;
+﻿using ECMS.Models.Database;
+using ECMS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,9 @@ namespace ECMS.App_Start
         {
             var container = new UnityContainer();
 
-            // Register your service
-            container.RegisterSingleton<GlobalDataService>();
+            container.RegisterType<GlobalDataService>(new PerRequestLifetimeManager());
+            container.RegisterType<DBEntities>(new PerRequestLifetimeManager()); 
+            container.RegisterType<ShoppingCartService>(new PerRequestLifetimeManager());
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

@@ -21,5 +21,8 @@ namespace ECMS.Models.Entities
         public string additional_description { get; set; }
         public bool featured { get; set; }
         public bool status { get; set; }
+        public Nullable<int> sold { get; set; }
+        public string brand { get; set; }
+
     }
 }

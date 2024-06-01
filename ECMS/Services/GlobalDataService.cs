@@ -45,7 +45,6 @@ namespace ECMS.Services
             CartTotal = _shoppingCartService.GetTotal();
             DiscountAmount = _shoppingCartService.GetDiscountAmount();
             DiscountCoupon = _shoppingCartService.GetDiscountCoupon();
-
         }
     }
 }

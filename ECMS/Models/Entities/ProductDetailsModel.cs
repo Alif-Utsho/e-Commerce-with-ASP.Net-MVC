@@ -29,6 +29,7 @@ namespace ECMS.Models.Entities
         public bool status { get; set; }
         public Nullable<int> discount { get; set; }
         public string thumbnail { get; set; }
+        public Nullable<int> sold { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<ProductColor> ProductColors { get; set; }

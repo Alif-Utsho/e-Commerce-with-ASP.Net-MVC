@@ -14,6 +14,12 @@ namespace ECMS.Models.Database
     
     public partial class Shipping
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Shipping()
+        {
+            this.Orders = new HashSet<Order>();
+        }
+    
         public int id { get; set; }
         public int customer_id { get; set; }
         public string name { get; set; }
@@ -22,5 +28,7 @@ namespace ECMS.Models.Database
         public string address { get; set; }
     
         public virtual Customer Customer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

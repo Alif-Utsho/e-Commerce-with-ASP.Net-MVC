@@ -14,11 +14,11 @@ namespace ECMS.Controllers
         protected ShoppingCartService _shoppingCartService;
         protected readonly DBEntities _dbContext;
 
-        public BaseController(GlobalDataService globalDataService, DBEntities dbContext)
+        public BaseController(GlobalDataService globalDataService, DBEntities dbContext, ShoppingCartService shoppingCartService)
         {
             _globalDataService = globalDataService;
             _dbContext = dbContext;
-            _shoppingCartService = new ShoppingCartService(System.Web.HttpContext.Current);
+            _shoppingCartService = shoppingCartService;
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -32,6 +32,7 @@ namespace ECMS.Controllers
             ViewBag.CartTotal = _globalDataService.CartTotal;
             ViewBag.DiscountAmount = _globalDataService.DiscountAmount;
             ViewBag.DiscountCoupon = _globalDataService.DiscountCoupon;
+            ViewBag.Customer = Session["Customer"];
         }
     }
 }

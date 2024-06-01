@@ -44,6 +44,7 @@
         <AssociationConnector Association="DBModel.FK_ProductSizes_Products" ManuallyRouted="false" />
         <AssociationConnector Association="DBModel.FK_ProductSizes_Sizes" ManuallyRouted="false" />
         <AssociationConnector Association="DBModel.FK_UserTokens_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="DBModel.FK_Orders_Shippings" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

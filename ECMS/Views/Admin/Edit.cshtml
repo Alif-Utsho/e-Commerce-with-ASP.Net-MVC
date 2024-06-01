@@ -1,0 +1,56 @@
+﻿@model ECMS.Models.Database.User
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+
+
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">Update User</h5>
+                <hr />
+                <div class="form-body mt-4">
+                    <form action="@Url.Action("Update", "Admin")" method="post" enctype="multipart/form-data">
+                        <div class="row justify-content-center">
+                            <input type="hidden" name="id" value="@Model.id" />
+                            <div class="col-lg-8">
+                                <div class="border border-3 p-4 rounded">
+                                    <div class="mb-3">
+                                        <label for="inputProductTitle" class="form-label">User name *</label>
+                                        <input type="text" class="form-control" id="inputProductTitle" placeholder="User name" name="name" value="@Model.name" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputEmail" class="form-label">User E-Mail *</label>
+                                        <input type="text" class="form-control" id="inputEmail" placeholder="User e-mail" name="email" value="@Model.email" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputPass" class="form-label">Password *</label>
+                                        <input type="text" class="form-control" id="inputPass" placeholder="User password" name="password" value="@Model.password" required>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!--end page wrapper -->

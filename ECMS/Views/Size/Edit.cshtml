@@ -1,0 +1,47 @@
+﻿@model ECMS.Models.Database.Size
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+
+
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">Add New Coupon</h5>
+                <hr />
+                <div class="form-body mt-4">
+                    <form action="@Url.Action("Update", "Size")" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="@Model.id" />
+                        <div class="row justify-content-center">
+
+                            <div class="col-lg-8">
+                                <div class="border border-3 p-4 rounded">
+                                    <div class="mb-3">
+                                        <label for="inputProductTitle" class="form-label">Size Name *</label>
+                                        <input type="text" class="form-control" id="inputProductTitle" placeholder="Size Name" name="sizeName" value="@Model.sizeName" required>
+                                    </div>
+                                    
+
+                                    <div class="mb-3">
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!--end page wrapper -->

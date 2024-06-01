@@ -1,0 +1,62 @@
+﻿@model ECMS.Models.Entities.CategoryModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+
+
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title">Add New Category</h5>
+                <hr />
+                <div class="form-body mt-4">
+                    <form action="@Url.Action("Upload", "Category")" method="post" enctype="multipart/form-data">
+                        <div class="row justify-content-center">
+
+                            <div class="col-lg-8">
+                                <div class="border border-3 p-4 rounded">
+                                    <div class="mb-3">
+                                        <label for="inputProductTitle" class="form-label">Category name *</label>
+                                        <input type="text" class="form-control" id="inputProductTitle" placeholder="Category name" name="name" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputDesc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="inputDesc" placeholder="Description" name="description"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputImg" class="form-label">Image *</label>
+                                        <input type="file" class="form-control" id="inputImg" name="image" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="checkbox" id="inputFrontview" name="front_view" value="true">
+                                        <label for="inputFrontview" class="form-label">Front View</label>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!--end page wrapper -->

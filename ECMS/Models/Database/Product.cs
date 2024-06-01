@@ -36,6 +36,8 @@ namespace ECMS.Models.Database
         public string additional_description { get; set; }
         public bool featured { get; set; }
         public bool status { get; set; }
+        public Nullable<int> sold { get; set; }
+        public string brand { get; set; }
     
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

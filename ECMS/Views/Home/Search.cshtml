@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+}
+
+
+
+
+
+
+<!-- ======================= Shop Style 1 ======================== -->
+<section class="bg-cover" style="background:url(/Assets/Frontend/img/banner-2.png) no-repeat;">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="text-center py-5 mt-3 mb-3">
+                    <h1 class="ft-medium mb-3">@ViewBag.Keyword</h1>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======================= Shop Style 1 ======================== -->
+<!-- ======================= Filter Wrap Style 1 ======================== -->
+<section class="py-2 br-bottom br-top">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="">Search</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewBag.Keyword</li>
+                    </ol>
+                </nav>
+            </div>
+
+
+        </div>
+
+    </div>
+</section>
+<!-- ============================= Filter Wrap ============================== -->
+<!-- ======================= All Product List ======================== -->
+<section class="middle">
+    <div class="container">
+
+        <!-- row -->
+        <div class="row align-items-center">
+
+            <!-- Single -->
+            @foreach (var product in ViewBag.Products)
+            {
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="product_grid row">
+                        <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                            <div class="shop_thumb position-relative">
+                                @if (product.discount > 0)
+                                {
+                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">-@product.discount%</div>
+                                }
+
+                                <a class="card-img-top d-block overflow-hidden" href="/home/productdetails/@product.slug"><img class="card-img-top" src="@Url.Content(product.thumbnail)" alt="..."></a>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7 col-md-6 col-sm-12">
+                            <div class="text-left mfliud">
+
+                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="/home/productdetails/@product.slug">@product.name</a></h5>
+
+                                @if (product.old_price != null)
+                                {
+                                    <span class="text-muted ft-medium line-through mr-2">$@product.old_price</span>
+                                    <span class="ft-bold theme-cl fs-md">$@product.new_price</span>
+                                }
+                                else
+                                {
+                                    <span class="ft-bold fs-md text-dark">$@product.new_price</span>
+                                }
+                                <div class="d-block mt-3 mb-4">
+                                    <p>@product.description</p>
+                                </div>
+                                <div class="position-relative text-left">
+                                    <a href="/home/productdetails/@product.slug" class="btn stretched-link borders">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Single -->
+
+
+        </div>
+        <!-- row -->
+
+
+    </div>
+</section>
+<!-- ======================= All Product List ======================== -->
